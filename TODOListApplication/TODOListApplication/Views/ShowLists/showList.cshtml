@@ -1,0 +1,122 @@
+﻿@model ListAndItemDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Model.listName;
+    long listId = Model.listId;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width" />
+    <title>showList</title>
+</head>
+<body>
+    <div class="container main">
+
+        <div class="list-group" style="margin-bottom:40px">
+            <h2>Filters</h2>
+            <form method="post" asp-action="showList" asp-route-listId="@listId">
+                <button type="submit" name="submitButton" value="trueStatus" class="btn btn-secondary">Complete</button>
+                <button type="submit" name="submitButton" value="falseStatus" class="btn btn-secondary">Not Complete</button>
+                <button type="submit" name="submitButton" value="trueExpired" class="btn btn-secondary">Not expired</button>
+                <button type="submit" name="submitButton" value="falseExpired" class="btn btn-secondary">Expired</button>
+                <div class="form-group">
+                    <label name="itemName"  for="itemDeadline">Item name</label>
+                    <input name="itemName"  for="itemDeadline" type="text" class="form-control" placeholder="Item Name">
+                    <button type="submit" name="submitButton" value="name" class="btn btn-secondary">Order by name</button>
+
+                </div>
+
+
+            </form>
+
+            <h2>Order By;</h2>
+            <form method="post" asp-action="showList" asp-route-listId="@listId">
+                <button type="submit" name="submitButton" value="complete" class="btn btn-secondary">Complete/Not Complete</button>
+                <button type="submit" name="submitButton" value="itemname" class="btn btn-secondary">Item name</button>
+                <button type="submit" name="submitButton" value="deadline" class="btn btn-secondary">Deadline</button>
+
+
+
+
+            </form>
+            <br />
+            <a href="" class="list-group-item list-group-item-action active">
+                @Model.listName
+            </a>
+            @foreach (var item2 in Model.toDoItems)
+            {
+                <button data-toggle="collapse" data-target="#@item2.toDoItem.itemName" class="list-group-item list-group-item-action btn btn-primary text-center align-content-center">@item2.toDoItem.itemName</button>
+                <div class="collapse" id="@item2.toDoItem.itemName">
+                    <div class="card" style="width: 18rem;">
+                        <ul style="margin-left:50px" class="list-group list-group-flush">
+                            <li class="list-group-item">Description: @item2.toDoItem.itemDescription</li>
+                            <li class="list-group-item">Deadline: @item2.toDoItem.itemDeadline</li>
+                            @if (item2.dependencies.Count > 0)
+                            {
+                                <p style="margin-left:20px;margin-top:10px;">Dependencies:</p>
+                                <ul>
+                                    @foreach (var dependency in item2.dependencies)
+                                    {
+                                        <li style="margin-left:0px; margin-bottom:10px;">@dependency</li>
+                                    }
+                                </ul>
+                            }
+                            @if (item2.toDoItem.status)
+                            {
+                                <li class="list-group-item">Status: complete</li>
+
+                            }
+                            else if (!item2.toDoItem.expired)
+                            {
+                                <li class="list-group-item">Status: expired</li>
+
+                            }
+                            else
+                            {
+                                <li class="list-group-item">Status: Not complete</li>
+                            }
+                            @if (!item2.toDoItem.status && item2.toDoItem.expired)
+                            {
+                                <li class="list-group-item " id="@item2.toDoItem.itemId">
+                                    <form>
+                                        <input type="button" name="button" class="btn btn-success" title="Complete" value="Complete" onclick="location.href='@Url.Action("indexButtons", "ShowLists", new { button = "complete" ,id = item2.toDoItem.itemId})'" />
+                                        <input type="button" name="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("indexButtons", "ShowLists", new { button = "delete",id = item2.toDoItem.itemId})' " />
+                                    </form>
+
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </div>
+                </div>
+            } 
+            <br/>
+        </div>
+
+
+
+        
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

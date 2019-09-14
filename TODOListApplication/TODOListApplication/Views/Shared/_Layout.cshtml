@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Bootstrap -->
+
+    <title>@ViewBag.Title</title>
+    <style>
+        .sidenav {
+            height: 100%;
+            background-color: #222;
+            background-image: -moz-linear-gradient(top, #111111 0%, #555555 50%, #111111 100%);
+            background-image: -webkit-linear-gradient(top, #111111 0%, #555555 50%, #111111 100%);
+            background-image: linear-gradient(to bottom, #111111 0%, #555555 50%, #111111 100%);
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+
+        .main {
+            padding: 0px 10px;
+        }
+
+        .login-main-text {
+            margin-top: 20%;
+            padding: 60px;
+            color: #fff;
+        }
+
+            .login-main-text h2 {
+                font-weight: 300;
+            }
+
+        @@media screen and (min-width: 768px) {
+            .main {
+                margin-top: 70px;
+                margin-left: 30%;
+            }
+
+            .sidenav {
+                width: 30%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidenav">
+        <div class="login-main-text">
+            <h2>TO DO List Application</h2>
+            <br>
+            <h5>Welcome @StaticVariables.User.userName!</h5>
+        </div>
+    </div>
+    <div class="main">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar bg-primary back">
+            <a class="navbar-brand" href="#">Home Page</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="ShowLists"
+                           asp-action="Index">My Lists<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Create" asp-action="Index">Create New List</a>
+                    </li>
+
+
+                </ul>
+
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i> @StaticVariables.User.userName
+                        </a>
+                        <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home"
+                           asp-action="Index">
+                            <i></i> Sign Out
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        @RenderBody()
+    </div>
+</body>
+</html>

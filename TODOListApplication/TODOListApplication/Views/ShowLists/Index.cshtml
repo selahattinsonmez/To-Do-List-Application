@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ListAndItemDTO>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "My Lists";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+                                window.onload = function () {
+                                alert("@ViewBag.Message");};
+        </script>
+    }
+    <script type="text/javascript">
+        void myFunction(id){
+            document.getElementById(id).remove();
+
+        }
+    </script>
+    <style>
+        .box {
+            border: 1px solid #777;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main">
+        @foreach (var item in Model)
+        {
+        <div class="list-group" style="margin-bottom:40px">
+            <a  class="list-group-item list-group-item-action active">
+                @item.listName
+            </a>
+            @foreach (var item2 in item.toDoItems)
+            {
+                <button data-toggle="collapse" data-target="#@item2.toDoItem.itemName" class="list-group-item list-group-item-action btn btn-primary text-center align-content-center">@item2.toDoItem.itemName</button>
+                <div class="collapse" id="@item2.toDoItem.itemName">
+                    <div class="card" style="width: 18rem;">
+                        <ul style="margin-left:50px" class="list-group list-group-flush">
+                            <li class="list-group-item">Description: @item2.toDoItem.itemDescription</li>
+                            <li class="list-group-item">Deadline: @item2.toDoItem.itemDeadline</li>
+                            @if (item2.dependencies.Count > 0)
+                            {
+                                <p style="margin-left:20px;margin-top:10px;">Dependencies:</p>
+                                <ul>
+                                    @foreach (var dependency in item2.dependencies)
+                                    {
+                                        <li style="margin-left:0px; margin-bottom:10px;">@dependency</li>
+                                    }
+                                </ul>
+                            }
+                            @if (item2.toDoItem.status)
+                            {
+                                <li class="list-group-item">Status: complete</li>
+
+                            }
+                            else if (!item2.toDoItem.expired)
+                            {
+                                <li class="list-group-item">Status: expired</li>
+
+                            }
+                            else
+                            {
+                                <li class="list-group-item">Status: Not complete</li>
+                            }
+                            @if (!item2.toDoItem.status && item2.toDoItem.expired)
+                            {
+                                <li class="list-group-item " id="@item2.toDoItem.itemId">
+                                    <form>
+                                        <input type="button" name="button" class="btn btn-success" title="Complete" value="Complete" onclick="location.href='@Url.Action("indexButtons", "ShowLists", new { button = "complete" ,id = item2.toDoItem.itemId})'" />
+                                        <input type="button" name="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("indexButtons", "ShowLists", new { button = "delete",id = item2.toDoItem.itemId})' " />
+                                    </form>
+
+                                </li>
+                            }
+
+
+
+                        </ul>
+
+                    </div>
+                </div>
+            }
+                <div class="list-group-item list-group-item-action btn btn-primary  ">
+                    <button onclick="location.href='@Url.Action("addItem", "Create", new {listId = item.listId})'" style="border-radius:5px;" class="btn-success">Add Item</button>
+                    <button onclick="location.href='@Url.Action("showList", "ShowLists", new {listId = item.listId})'" style="border-radius:5px;" class="btn-light">Filter/Order</button>
+
+                    <button onclick="location.href='@Url.Action("deleteList", "ShowLists", new {listId = item.listId})'" style="border-radius:5px;" class="btn-danger">Delete</button>
+
+
+                </div>
+
+
+        </div>
+
+
+
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
